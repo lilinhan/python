@@ -6,9 +6,10 @@ import urllib2
 import time
 import MySQLdb
 
+
+
+
 def get_movie_info(url, jpg):
-    db = MySQLdb.connect('localhost', 'root', 'lewin123', 'moviedb')
-    cursor = db.cursor()
     path = 'http://www.xunleigang.com/'
     list = []
     req = urllib2.Request(path+url)
@@ -32,16 +33,26 @@ def get_movie_info(url, jpg):
 #jpg = jpg
     jpg = path + jpg
 
-    sql = """INSERT INTO movie_data(name, picture, classfication, area, year, director, star,
-        score, download, jpg) VALUES(movie_name,list[1],list[2],list[3],list[4],list[5],list[6],path+url,jpg)"""
-    try:
-        cursor.execute(sql)
-        db.commit()
-    except:
-        db.rollback()
-    db.close()
-
     print movie_name
+    print list[1]
+    print list[2]
+    print list[3]
+    print list[4]
+    print list[5]
+    print list[6]
+    print path+url
+    print jpg
+
+sql = """INSERT INTO movie_data(name, picture, classfication, area, year, director, star,
+        score, summary, download, jpg) VALUES('1','2','3','4','5','6','7','8','9','10','11')"""
+
+try:
+    cursor.execute(sql)
+    db.commit()
+except:
+    db.rollback()
+
+db.close()
 
 def get_url_list_in_one_page(url, urllist):
     req = urllib2.Request(url)
@@ -65,12 +76,15 @@ def print_url_list(urllist):
 def loop_all_page():
     urllist = []
     url = 'http://www.xunleigang.com/forum.php?mod=forumdisplay&fid=2&ortid=1&page='
-    for i in range(1,265):
+    for i in range(1,2):
         url += str(i)
         get_url_list_in_one_page(url,urllist)
 
-    #print_url_list(urllist)
-
+    print_url_list(urllist)
 
 if __name__ == '__main__' :
-    loop_all_page()
+    urllist = []
+    db = MySQLdb.connect('localhost', 'root', 'lewin123', 'moviedb')
+cursor = db.cursor()
+    url = 'http://www.xunleigang.com/forum.php?mod=forumdisplay&fid=2&ortid=1&sortid=1&page=1'
+    get_url_list_in_one_page(url,urllist)
